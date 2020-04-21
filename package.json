@@ -1,0 +1,18 @@
+{
+    "scripts": {
+        "migrate:make": "knex migrate:make",
+        "migrate:latest": "knex migrate:latest",
+        "migrate:rollback": "knex migrate:rollback",
+        "seed:make": "knex seed:make",
+        "seed:run": "knex seed:run"
+    },
+    "dependencies": {
+        "bcrypt": "^4.0.1",
+        "express": "4.17.1",
+        "express-rate-limit": "^5.1.1",
+        "knex": "^0.20.13",
+        "mysql": "^2.18.1",
+        "nodemon": "^2.0.2",
+        "objection": "^2.1.3"
+    }
+}
