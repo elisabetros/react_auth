@@ -1,5 +1,15 @@
 const express = require('express')
 const app = express()
+const session = require('express-session')
+
+
+// set up the session 
+app.use(session({
+    secret: 'kari alvitri',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }))
 
 // const UserModel = import('./models/User')
 // console.log(UserModel)
@@ -30,10 +40,11 @@ app.use(userRoute)
 // ########################
 const User = require('./models/User.js')
 
-app.get("/", async (req, res) => {
-    // const result = await knex.select().from('address')
-    // res.send(result)
-    res.send({result: await User.query()})
+
+app.get("/users", async (req, res) => {
+    const result = await User.query().select().from('user')
+    res.header("Access-Control-Allow-Origin", "*");
+    res.send(result)
 })
 
 //############################
