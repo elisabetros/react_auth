@@ -10,30 +10,37 @@ router.post('/user/login', async (req, res) => {
     const { username, email, password } = req.body
     sess = req.session;
 
-    if((!username || !email) && !password){
-       return res.send({response: "missing fields"})
-   }
-   const users = await User.query().where({ username }).limit(1);
-   const user = users[0]
+    if(!username && !password){
+    return res.send({response: "missing fields"})
+    }
+    const users = await User.query().where({ username }).limit(1);
+    const user = users[0]
 
-   if(!user){
-       return res.status(404).send({ response: 'wrong username' })
-   }
-    bcrypt.compare(password, user.password, (error, isSame) => {
-            if(error){
-                return res.status(500).send({ response: 'error' })
-            }
-            if(!isSame){
-                return res.status(404).send({ response: 'wrong password' })
-            }else{
-                sess.user.username;
-                console.log(sess)
-                return res.send({ response: {userID: user.id} })
-            }
-        })
+    if(!user){
+        return res.status(404).send({ response: 'wrong username' })
+    }
+        bcrypt.compare(password, user.password, (error, isSame) => {
+                if(error){
+                    return res.status(500).send({ response: 'error' })
+                }
+                if(!isSame){
+                    return res.status(404).send({ response: 'wrong password' })
+                }else{
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    req.session.save()
+                    res.send(req.session)
+                }
+            })
 //    return res.send({response: username})
 })
-
+router.get('/profile', (req, res) => {
+    if(req.session.loggedin){
+      console.log(req.session)
+    }
+     res.send({"response": req.session.username})
+      
+  });
 router.post('/user/register', (req, res) => {
     const { username, email, password, repeatPassword } = req.body
 
@@ -68,6 +75,10 @@ router.post('/user/register', (req, res) => {
                 return res.status(500).send({ response: "something went wrong with the database"});
             }
         })
+})
+
+router.post('user/resetPassword', (req, res) => {
+
 })
 
 module.exports = router;

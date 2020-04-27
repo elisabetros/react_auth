@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+nav>li{
+  display :inline-block;
+  margin:  1% 5%;
+}
+li>a, a:visited{
+  text-decoration: none;
+  color:black;
+}
+form{
+  display: grid;
+  width:30vw;
+  margin: 5% auto;
+  grid-gap:1vw;
+}
+label{
+  display: grid;
+  text-align: left;
+
+}
+button, input{
+  padding:10px;
+}
+form > button{
+  background:darkslategrey;
+  border: none;
+  color:white;
+  text-transform: uppercase;
+}

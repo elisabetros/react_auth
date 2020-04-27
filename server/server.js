@@ -1,18 +1,23 @@
 const express = require('express')
 const app = express()
 const session = require('express-session')
+var cors = require('cors');
 
+app.use(cors({
+    credentials: true,
+  }));
 
-// set up the session 
 app.use(session({
     secret: 'kari alvitri',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true }
+    cookie:  { 
+      maxAge: 1000 * 60 * 60 * 24
+     }
   }))
 
-// const UserModel = import('./models/User')
-// console.log(UserModel)
+
+
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
@@ -35,22 +40,25 @@ Model.knex(knex)
 const userRoute = require('./routes/users')
 
 app.use(userRoute)
-
+let sess;
 
 // ########################
 const User = require('./models/User.js')
 
 
 app.get("/users", async (req, res) => {
+ 
     const result = await User.query().select().from('user')
     res.header("Access-Control-Allow-Origin", "*");
     res.send(result)
 })
 
+
+
 //############################
 
 
-const server= app.listen(80, (err) => {
+const server = app.listen(80, (err) => {
     if(err){console.log("server couldn't connect");return;}
     console.log('server running on port ', server.address().port)
 })
