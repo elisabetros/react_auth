@@ -7,8 +7,10 @@ const Profile= ()=> {
 
       axios("http://localhost/profile")
             .then(response =>{
-              console.log(response.data)
-              setUser(response.data)
+              if(response.data.id){
+                console.log(response.data)
+                setUser(response.data)
+              }
               // console.log("state user", user)
             })
     }, [])

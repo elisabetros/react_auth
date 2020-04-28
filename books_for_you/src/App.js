@@ -18,13 +18,13 @@ const App = () => {
   })
 
   useEffect(() =>{
-    axios('http://localhost/profile')
+    axios('http://localhost/profile') // make a new enpoint to get session
     .then(response => {
-      if(response.data.username){
+      if(response.data.id){
         setUser(response.data)
         setUserStatus({
           path: "/logout",
-    action: "Log Out"
+          action: "Log Out"
         })
       }
     })
@@ -38,26 +38,27 @@ const App = () => {
    setUser(newValue)
  }
   
-    return (
-      
+    return (      
       <div className="App">
       <Router>
         <nav>
           <li><Link to='/'>Home</Link></li>
           <li><Link to={userStatus.path}>{userStatus.action}</Link></li>
           <li><Link to='/profile'>Profile</Link></li>
-          {/* <li><Link to=''></Link></li> */}
         </nav>
     
      
         
       <Switch>
-        <Route path='/profile'
-        component={() => <Profile/>}/>    
-        <Route path='/'
+        <Route exact path='/'
         component={() => <Home/>}/>    
+
+        <Route path='/profile'
+        component={() => <Profile/>}/> 
+
         <Route path='/login'
-        component={(props) => <Login {...props} onUserAction={handleAction} />}/>    
+        component={(props) => <Login {...props} onUserAction={handleAction} />}/>  
+
         <Route path='/logout'
         component={(props) => <Logout {...props} onUserAction={handleAction} onLogout={handleLogout}/>}/>    
       </Switch>
