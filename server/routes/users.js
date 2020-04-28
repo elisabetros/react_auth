@@ -26,21 +26,36 @@ router.post('/user/login', async (req, res) => {
                 if(!isSame){
                     return res.status(404).send({ response: 'wrong password' })
                 }else{
-                    req.session.loggedin = true;
-                    req.session.username = username;
-                    req.session.save()
-                    res.send(req.session)
+                    // sess.loggedin = true;
+                    sess.user = user;
+                    delete sess.user.password
+                    res.send(sess.user)
                 }
             })
 //    return res.send({response: username})
 })
+
 router.get('/profile', (req, res) => {
-    if(req.session.loggedin){
-      console.log(req.session)
+    if(!sess){
+    return res.send({response: "you need to log in"})
     }
-     res.send({"response": req.session.username})
-      
-  });
+    res.send(sess.user)
+});
+
+router.get('/user/logout', (req, res) => {
+    if(!sess){
+        return res.send({response: "no one is logged in"})
+    }
+
+    req.session.destroy(err => {
+        if(err){
+            return res.status(401).send({ response: "cannot log out"})
+        }
+        sess = null
+        return res.send({ response: "success"})
+    })
+   
+})
 router.post('/user/register', (req, res) => {
     const { username, email, password, repeatPassword } = req.body
 

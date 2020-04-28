@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 export default function LogIn(props) {
-    // console.log(props)
+ 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [user, setUser] = useState([]);
 
     //validate login data
-
         const handleSubmit = (e) => {
             console.log(username, password)
             e.preventDefault()
@@ -18,11 +18,14 @@ export default function LogIn(props) {
             })
             .then(response => {
                 console.log(response.data)
-                // props.history.push("/profile")
+            //    const  {username, email, id, first_name, last_name, birthday, created_at} = response.data
+                setUser(response.data)
+                props.onUserAction({path:"/logout", action: "Log Out"})
+                props.history.push('/profile')
             })
         }
 
-    
+
     return(
         <form method="post">
             <h2>Please log in</h2>

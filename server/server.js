@@ -8,14 +8,14 @@ app.use(cors({
   }));
 
 app.use(session({
-    secret: 'kari alvitri',
+    secret: 'secret',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie:  { 
-      maxAge: 1000 * 60 * 60 * 24
+      maxAge: 1000 * 60 * 60 * 24,
+      secure:true
      }
   }))
-
 
 
 
