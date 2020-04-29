@@ -1,24 +1,32 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios';
+import { BrowserRouter as Router,  Link  } from 'react-router-dom';
 
-const Profile= ()=> {
-    const [user, setUser] = useState([]);
-    useEffect(()=>{
+import useOnlineStatus from '../custom_hooks/useOnlineStatus'
 
-      axios("http://localhost/profile")
-            .then(response =>{
-              if(response.data.id){
-                console.log(response.data)
-                setUser(response.data)
-              }
-              // console.log("state user", user)
-            })
-    }, [])
-            
-            
+const Profile = ()=> {
+  // console.log(useOnlineStatus())
+    // const [user, setUser] = useState([]);
+    const user = useOnlineStatus()
+    // console.log(user)
+    
+    
+
+   const returnGreeting = ()=> {
+
+      if(user.username){
+        return <h1>Welcome {user.username}</h1>
+      }
+      else{
+        return <h1>Please log in to view your Profile</h1>
+      }
+    }
+    
+    
        	return(
           <div>
-            <h1>Welcome {user.username}</h1>
+            {returnGreeting()}
+            <h2>Your liked books</h2>
           </div>
         )
 

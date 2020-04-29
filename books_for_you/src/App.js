@@ -7,27 +7,28 @@ import Logout from './pages/Logout'
 import Profile from './pages/Profile'
 import Home from './pages/Home'
 
+import useOnlineStatus from './custom_hooks/useOnlineStatus'
+
 import axios from 'axios';
 
 const App = () => {
-  const[ isLoading, setLoadingStatus ] = useState(true)
-  const[ user, setUser ] = useState()
-  const[ userStatus, setUserStatus ] = useState({
+  const [ isLoading, setLoadingStatus ] = useState(true)
+  // const [ user, setUser ] = useState(true)
+  const [ userStatus, setUserStatus ] = useState({
     path: "/login",
     action: "Log in"
   })
+  
+  const user = useOnlineStatus()
 
   useEffect(() =>{
-    axios('http://localhost/profile') // make a new enpoint to get session
-    .then(response => {
-      if(response.data.id){
-        setUser(response.data)
-        setUserStatus({
-          path: "/logout",
-          action: "Log Out"
-        })
-      }
-    })
+   if(user.id){
+     console.log(user)
+     setUserStatus({
+       path: "/logout",
+       action: "Log Out"
+     })
+   }
   },[])
   
  const handleAction = (newStatus) => {
@@ -35,7 +36,8 @@ const App = () => {
  }
   
  const handleLogout = (newValue) => {
-   setUser(newValue)
+   console.log()
+//    setUser(newValue)
  }
   
     return (      

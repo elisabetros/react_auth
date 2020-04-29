@@ -11,7 +11,7 @@ export default function LogOut (props) {
                 props.onUserAction({path:"/login", action: "Log In"})
                 props.onLogout([])
                 props.history.push('/')
-            }
+            }   
         })
 
     },[])
