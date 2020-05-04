@@ -1,49 +1,31 @@
-.App {
+*{
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+body{
+  max-width: 100vw;
+}
+h1, h2, h2, nav{
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* NAVIGATION MENU */
+nav{
+  width:100vw
 }
 nav>li{
   display :inline-block;
   margin:  1% 5%;
 }
+a.active{
+  text-decoration: underline;
+}
 li>a, a:visited{
   text-decoration: none;
   color:black;
 }
+
+/* LOGIN FORM */
 form{
   display: grid;
   width:30vw;
@@ -53,7 +35,6 @@ form{
 label{
   display: grid;
   text-align: left;
-
 }
 button, input{
   padding:10px;
@@ -63,4 +44,27 @@ form > button{
   border: none;
   color:white;
   text-transform: uppercase;
+}
+
+/* FRONTPAGE */
+.moviesContainer{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr ;
+  grid-gap:2vw;
+  margin: 0 5%;
+}
+.movie{
+  padding: 3%;
+  border: 1px solid #ddd;
+}
+.movie img{
+  width:80%;
+  display: block;
+  margin:auto;
+}
+.movie p, .movie h2{
+  padding: 1% 0;
+}
+.moviesContainer h1{
+  grid-column: 1/-1;
 }

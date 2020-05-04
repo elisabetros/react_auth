@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch  } from 'react-router-dom';
+import { BrowserRouter as Router, Route, NavLink, Switch  } from 'react-router-dom';
 import './App.css';
 
 import Login from './pages/Login'
@@ -7,46 +7,49 @@ import Logout from './pages/Logout'
 import Profile from './pages/Profile'
 import Home from './pages/Home'
 
-import useOnlineStatus from './custom_hooks/useOnlineStatus'
+// import apiKey from './config/apiCredentials'
 
-import axios from 'axios';
+import isAuthorized from './custom_hooks/isAuthorized'
+import MovieReview from './pages/MovieReview';
 
-const App = () => {
+// import axios from 'axios';
+
+const App =  (props) => {
+  console.log(props)
   const [ isLoading, setLoadingStatus ] = useState(true)
   // const [ user, setUser ] = useState(true)
+  const [ isLoggedIn, setLoggedInStatus ] = useState(false)
   const [ userStatus, setUserStatus ] = useState({
     path: "/login",
     action: "Log in"
   })
-  
-  const user = useOnlineStatus()
 
-  useEffect(() =>{
-   if(user.id){
-     console.log(user)
-     setUserStatus({
-       path: "/logout",
-       action: "Log Out"
-     })
-   }
-  },[])
+   useEffect(() => {
+     if(props.isAuthorized){
+      setLoggedInStatus(true)
+     }
+   }, [props.isAuthorized])
   
+
  const handleAction = (newStatus) => {
-   setUserStatus(newStatus)
+   setLoggedInStatus(newStatus)
  }
   
- const handleLogout = (newValue) => {
-   console.log()
-//    setUser(newValue)
- }
+//  const handleLogout = (newValue) => {
+//   setLoggedInStatus(newValue)
+// //    setUser(newValue)
+//  }
   
     return (      
       <div className="App">
       <Router>
         <nav>
-          <li><Link to='/'>Home</Link></li>
-          <li><Link to={userStatus.path}>{userStatus.action}</Link></li>
-          <li><Link to='/profile'>Profile</Link></li>
+          <li><NavLink activeClassName="active" exact to='/'>Home</NavLink></li>
+          <li><NavLink activeClassName="active" to='/profile'>Profile</NavLink></li>
+          {!isLoggedIn
+          ? <li><NavLink activeClassName="active" to='/login'>Log in</NavLink></li>
+          : <li><Logout onLogout={handleAction}/></li>
+            }
         </nav>
     
      
@@ -59,16 +62,17 @@ const App = () => {
         component={() => <Profile/>}/> 
 
         <Route path='/login'
-        component={(props) => <Login {...props} onUserAction={handleAction} />}/>  
+        component={(props) => <Login {...props} onLogin={handleAction} />}/>  
 
-        <Route path='/logout'
-        component={(props) => <Logout {...props} onUserAction={handleAction} onLogout={handleLogout}/>}/>    
+        {/* <Route path='/logout'
+        component={(props) => <Logout {...props} onUserAction={handleAction} onLogout={handleLogout}/>}/>  */}
+
+        <Route path='/movieReview/:id'
+        component={(props) => <MovieReview {...props}/>}/>   
       </Switch>
       </Router>
       </div>
     )
 }
 
-
-
-export default App;
+export default isAuthorized(App);

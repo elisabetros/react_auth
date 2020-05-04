@@ -4,13 +4,19 @@ const session = require('express-session')
 var cors = require('cors');
 
 app.use(cors({
-    credentials: true,
+  credentials: true
   }));
 
+const rateLimit = require('express-rate-limit')
+
+// const authLimiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 4 // limit each IP to 4 requests per windowMs
+// })
 app.use(session({
     secret: 'secret',
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie:  { 
       maxAge: 1000 * 60 * 60 * 24,
       secure:true

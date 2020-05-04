@@ -2,34 +2,39 @@ import React, {useState, useEffect} from 'react'
 import axios from 'axios';
 import { BrowserRouter as Router,  Link  } from 'react-router-dom';
 
-import useOnlineStatus from '../custom_hooks/useOnlineStatus'
 
-const Profile = ()=> {
-  // console.log(useOnlineStatus())
-    // const [user, setUser] = useState([]);
-    const user = useOnlineStatus()
-    // console.log(user)
+import isAuthorized from '../custom_hooks/isAuthorized';
+import useUserStatus from '../custom_hooks/useUserStatus';
+
+const Profile = (props)=> {
+  const [ user, setUser ] = useState()
+// console.log()
+  useEffect(() => {
+    let isFetching = true
     
-    
-
-   const returnGreeting = ()=> {
-
-      if(user.username){
-        return <h1>Welcome {user.username}</h1>
+    const fetchOnlineUser = async () => {
+      const response = await axios("http://localhost/profile")
+        if(isFetching){
+            console.log(response.data)
+          setUser(response.data)
+        }
       }
-      else{
+      fetchOnlineUser()
+
+    return () => isFetching = false; //unsubscribe
+},[]) 
+
+      if(!props.isAuthorized){
         return <h1>Please log in to view your Profile</h1>
       }
-    }
-    
-    
+          // console.log(user.username)
        	return(
           <div>
-            {returnGreeting()}
-            <h2>Your liked books</h2>
+            <h1> Welcome {user.username} </h1>
+            <h2> Your liked books</h2>
           </div>
         )
 
 }
 
-export default Profile
+export default isAuthorized(Profile)

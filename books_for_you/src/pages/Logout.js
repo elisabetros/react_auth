@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import isAuthorized from '../custom_hooks/isAuthorized'
 
-export default function LogOut (props) {
+const LogOut = (props) => {
 
-    useEffect(() => {
+    const handleLogout = () => {
+
+
         axios('http://localhost/user/logout')
         .then(response => {
             // console.log(response)
             if(response.data.response === "success"){
-                props.onUserAction({path:"/login", action: "Log In"})
-                props.onLogout([])
-                props.history.push('/')
+                props.onLogout(false)
             }   
         })
 
-    },[])
+    }
 
     return(
-        <div>
-          
-        </div>
+        <button onClick={handleLogout}>Log Out</button>
     )
 
 }
+export default isAuthorized(LogOut)

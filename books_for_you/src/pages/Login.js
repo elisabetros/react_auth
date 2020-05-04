@@ -20,7 +20,7 @@ export default function LogIn(props) {
                 console.log(response.data)
             //    const  {username, email, id, first_name, last_name, birthday, created_at} = response.data
                 setUser(response.data)
-                props.onUserAction({path:"/logout", action: "Log Out"})
+                props.onLogin(true)
                 props.history.push('/profile')
             })
         }

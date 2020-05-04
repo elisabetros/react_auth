@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
 const User = require("../models/User");
-let sess;
+let sess = null;
 
 router.post('/user/login', async (req, res) => {
     const { username, email, password } = req.body
@@ -27,7 +27,9 @@ router.post('/user/login', async (req, res) => {
                     return res.status(404).send({ response: 'wrong password' })
                 }else{
                     // sess.loggedin = true;
-                    sess.user = user;
+                    sess.user = user
+                    sess.isLoggedIn = true
+                    req.session.isLoggedIn = true
                     delete sess.user.password
                     res.send(sess.user)
                 }
@@ -36,17 +38,25 @@ router.post('/user/login', async (req, res) => {
 })
 
 router.get('/profile', (req, res) => {
-    if(!sess){
-    return res.send({response: "you need to log in"})
+    console.log(sess.user)
+    if(sess === null){
+        return res.send({response: "you need to log in"})
     }
     res.send(sess.user)
 });
 
+router.get('/user', (req, res) => {
+    if(sess === null){
+        return res.send(false)
+    }
+    res.send(sess.isLoggedIn)
+});
+
 router.get('/user/logout', (req, res) => {
-    if(!sess){
+    if(sess=== null){
         return res.send({response: "no one is logged in"})
     }
-
+// 
     req.session.destroy(err => {
         if(err){
             return res.status(401).send({ response: "cannot log out"})
@@ -54,7 +64,6 @@ router.get('/user/logout', (req, res) => {
         sess = null
         return res.send({ response: "success"})
     })
-   
 })
 router.post('/user/register', (req, res) => {
     const { username, email, password, repeatPassword } = req.body
