@@ -21,8 +21,8 @@ const nodemailer = require('nodemailer')
   const mailOptions = {
     from: credentials.username,
     to: credentials.username,
-    subject: 'Invoices due',
-    text: 'Dudes, we really need your money.'
+    subject: 'A email about Movies',
+    text: 'Movies are fun.'
   };
   
   transporter.sendMail(mailOptions, function(error, info){

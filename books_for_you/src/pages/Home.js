@@ -3,8 +3,9 @@ import axios from 'axios';
 
 import apiKey from '../config/apiCredentials'
 import { Link } from 'react-router-dom';
+import isAuthorized from '../custom_hooks/isAuthorized';
 
-const Home = () => {
+const Home = (props) => {
     const [ movies, setMovies ] = useState([])
 
     useEffect(() => {
@@ -24,8 +25,11 @@ const Home = () => {
         })
     }, [])
 
-    const handleClick = () => {
-        
+    const handleClick = (e) => {
+        console.log(e.target.parentElement.id)
+        if(!props.isAuthorized){
+            alert('login to like a movie')
+        }
     }
   
     return(
@@ -38,7 +42,7 @@ const Home = () => {
                     <h2>{movie.title}</h2>
                     <p>{movie.overview}</p>
                     <Link to={"/movieReview/"+movie.id} >See Reviews</Link>                   
-                    <button onClick={handleClick}>Add to Watchlist</button>
+                    <button onClick={(e) => handleClick(e)}>Add to Watchlist</button>
                 </div>
                 )
             })}
@@ -46,4 +50,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default isAuthorized(Home);

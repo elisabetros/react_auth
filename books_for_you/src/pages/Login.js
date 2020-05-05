@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 export default function LogIn(props) {
  
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [user, setUser] = useState([]);
+    // const [user, setUser] = useState([]);
 
     //validate login data
         const handleSubmit = (e) => {
@@ -19,7 +20,7 @@ export default function LogIn(props) {
             .then(response => {
                 console.log(response.data)
             //    const  {username, email, id, first_name, last_name, birthday, created_at} = response.data
-                setUser(response.data)
+                // setUser(response.data)
                 props.onLogin(true)
                 props.history.push('/profile')
             })
@@ -27,6 +28,7 @@ export default function LogIn(props) {
 
 
     return(
+        <>
         <form method="post">
             <h2>Please log in</h2>
             <label >
@@ -41,6 +43,8 @@ export default function LogIn(props) {
             <button  onClick={(e)=> handleSubmit(e) }>Log in</button>
 
         </form>
+        <Link to="/resetpassword">Reset Password</Link>
+        </>
     )
 }
 

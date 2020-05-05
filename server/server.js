@@ -23,7 +23,7 @@ app.use(session({
      }
   }))
 
-
+let sess = null;
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
@@ -44,9 +44,10 @@ Model.knex(knex)
 
 //#### set up routes with our server instance ###
 const userRoute = require('./routes/users')
+const movieRoute = require('./routes/movies')
 
 app.use(userRoute)
-let sess;
+app.use(movieRoute)
 
 // ########################
 const User = require('./models/User.js')

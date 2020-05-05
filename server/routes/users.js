@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10;
 
 const User = require("../models/User");
-let sess = null;
+// let sess = null;
 
 router.post('/user/login', async (req, res) => {
     const { username, email, password } = req.body
@@ -38,7 +38,7 @@ router.post('/user/login', async (req, res) => {
 })
 
 router.get('/profile', (req, res) => {
-    console.log(sess.user)
+    // console.log(sess.user)
     if(sess === null){
         return res.send({response: "you need to log in"})
     }
@@ -65,6 +65,51 @@ router.get('/user/logout', (req, res) => {
         return res.send({ response: "success"})
     })
 })
+router.post('/user/resetpassword', async (req, res) => {
+    // return res.send(sess.user)
+    const { oldPassword, newPassword, newRepeatPassword } = req.body
+    
+    if(sess === null){
+        return res.send({response:'log in please'})
+    }    
+    const { id } = sess.user
+    if(!oldPassword && !newPassword && !newRepeatPassword){
+        return res.send({response: 'missing fields'})
+    }
+    if(newPassword !== newRepeatPassword){
+        return res.send({response: "passwords don't match"})
+    }
+    const existingUser =  await User.query().select().where({ id:id }).limit(1)
+    if(!existingUser[0]){
+        return res.status(500).send({ response: "no user with that information"});
+    }
+    // return res.send({existingUser})
+    bcrypt.compare(oldPassword, existingUser[0].password, (error, isSame) => {
+        if(error){
+            return res.status(500).send({ response: 'error' })
+        }
+        if(!isSame){
+            return res.status(404).send({ response: 'wrong password' })
+        }else{
+            bcrypt.hash(newPassword, saltRounds, async (error, hashedPassword) => {
+                if(error){
+                    return res.status(500).send({ response: "couldn't hash password" })
+                }
+                try{
+                    const updatedUser = await User.query().update({ 
+                        password: hashedPassword
+                    }).where({ id:id })
+                    return res.status(200).send(true)
+
+                }catch(error){
+                    return res.status(500).send({ response: "something went wrong with the database"});
+                }
+            })
+            // return res.send({response:'success'})
+        }
+    })
+})
+
 router.post('/user/register', (req, res) => {
     const { username, email, password, repeatPassword } = req.body
 
@@ -80,7 +125,7 @@ router.post('/user/register', (req, res) => {
     //if email is not correct form
     bcrypt.hash(password, saltRounds, async (error, hashedPassword) => {
         if(error){
-            return res.status(500).send({ })
+            return res.status(500).send({ response: "couldn't hash password" })
         }
             try{
                 // console.log("this newly hashed password",hashedPassword)
@@ -101,8 +146,6 @@ router.post('/user/register', (req, res) => {
         })
 })
 
-router.post('user/resetPassword', (req, res) => {
 
-})
 
 module.exports = router;

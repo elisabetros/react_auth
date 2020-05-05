@@ -5,8 +5,6 @@ import isAuthorized from '../custom_hooks/isAuthorized'
 const LogOut = (props) => {
 
     const handleLogout = () => {
-
-
         axios('http://localhost/user/logout')
         .then(response => {
             // console.log(response)

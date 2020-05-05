@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, NavLink, Switch  } from 'react-router-d
 import './App.css';
 
 import Login from './pages/Login'
-import Logout from './pages/Logout'
+import Logout from './components/Logout'
 import Profile from './pages/Profile'
 import Home from './pages/Home'
 
@@ -11,6 +11,8 @@ import Home from './pages/Home'
 
 import isAuthorized from './custom_hooks/isAuthorized'
 import MovieReview from './pages/MovieReview';
+import SendResetEmail from './pages/SendResetEmail';
+import ResetPassword from './pages/ResetPassword'
 
 // import axios from 'axios';
 
@@ -19,10 +21,7 @@ const App =  (props) => {
   const [ isLoading, setLoadingStatus ] = useState(true)
   // const [ user, setUser ] = useState(true)
   const [ isLoggedIn, setLoggedInStatus ] = useState(false)
-  const [ userStatus, setUserStatus ] = useState({
-    path: "/login",
-    action: "Log in"
-  })
+ 
 
    useEffect(() => {
      if(props.isAuthorized){
@@ -64,11 +63,15 @@ const App =  (props) => {
         <Route path='/login'
         component={(props) => <Login {...props} onLogin={handleAction} />}/>  
 
-        {/* <Route path='/logout'
-        component={(props) => <Logout {...props} onUserAction={handleAction} onLogout={handleLogout}/>}/>  */}
-
         <Route path='/movieReview/:id'
         component={(props) => <MovieReview {...props}/>}/>   
+
+        <Route path='/sendResetEmail' 
+        component={(props) => <SendResetEmail {...props} />}/>
+        
+        <Route path="/resetPassword" 
+        component={() => <ResetPassword/> }/>
+        
       </Switch>
       </Router>
       </div>
