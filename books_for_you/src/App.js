@@ -13,6 +13,7 @@ import isAuthorized from './custom_hooks/isAuthorized'
 import MovieReview from './pages/MovieReview';
 import SendResetEmail from './pages/SendResetEmail';
 import ResetPassword from './pages/ResetPassword'
+import Signup from './pages/Signup';
 
 // import axios from 'axios';
 
@@ -44,6 +45,7 @@ const App =  (props) => {
       <Router>
         <nav>
           <li><NavLink activeClassName="active" exact to='/'>Home</NavLink></li>
+          <li><NavLink activeClassName="active" to='/signup'>Sign up</NavLink></li>
           <li><NavLink activeClassName="active" to='/profile'>Profile</NavLink></li>
           {!isLoggedIn
           ? <li><NavLink activeClassName="active" to='/login'>Log in</NavLink></li>
@@ -63,14 +65,17 @@ const App =  (props) => {
         <Route path='/login'
         component={(props) => <Login {...props} onLogin={handleAction} />}/>  
 
+        <Route path='/signup'
+        component={(props) => <Signup {...props}  />}/>  
+
         <Route path='/movieReview/:id'
         component={(props) => <MovieReview {...props}/>}/>   
 
         <Route path='/sendResetEmail' 
         component={(props) => <SendResetEmail {...props} />}/>
         
-        <Route path="/resetPassword" 
-        component={() => <ResetPassword/> }/>
+        <Route path="/resetPassword/:id" 
+        component={(props) => <ResetPassword {...props}/> }/>
         
       </Switch>
       </Router>

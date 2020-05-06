@@ -8,7 +8,7 @@ const isAuthorized = ComponentToWrap => props => {
       let isFetching = true
       
       const fetchOnlineUser = async () => {
-        const response = await axios("http://localhost/user", { credentials:'include'})
+        const response = await axios("http://localhost/user")
           if(isFetching){
             setLoginStatus(response.data)
           }

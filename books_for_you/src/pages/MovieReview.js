@@ -5,11 +5,11 @@ import apiKey from '../config/apiCredentials';
 import axios from 'axios';
 import isAuthorized from '../custom_hooks/isAuthorized';
 
-const MovieReview = ({ match: { params: { id } } ,isAuthorized}, ) => {
+const MovieReview = ({ match: { params: { id } } ,isAuthorized} ) => {
     const [ reviews, setReviews ] = useState([])
     const [ movie, setMovie ] = useState([])
             
-
+console.log(id)
     console.log(isAuthorized)
 
     useEffect(() => {
@@ -57,9 +57,9 @@ const MovieReview = ({ match: { params: { id } } ,isAuthorized}, ) => {
             <h1>{movie.title}</h1>
             <img src={'https://image.tmdb.org/t/p/w500/' + movie.poster_path}/>
             <div className ="reviewsContainer">
-                {reviews.map(review=>{
+                {reviews.map((review, index)=>{
                     return(
-                    <div className="review">
+                    <div className="review" key={review.author+index}>
                     <h3>{review.author}</h3>
                     <p>{review.content}</p>
                     </div>)

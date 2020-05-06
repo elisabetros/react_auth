@@ -11,7 +11,7 @@ import Movie from '../components/Movie'
 const Profile = (props)=> {
   const [ user, setUser ] = useState()
   const [ likedMovies, setMovies ] = useState([])
-console.log(likedMovies)
+// console.log(likedMovies)
   useEffect(() => {
     let isFetching = true
     
@@ -35,6 +35,13 @@ console.log(likedMovies)
     return () => isFetching = false; //unsubscribe
 },[]) 
 
+const handleRemoveMovie = (movieID) => {
+  // console.log(movieID)
+    const newLikedMovies = likedMovies.filter(movie => movie.id !=movieID)
+    console.log(newLikedMovies)
+    setMovies(newLikedMovies)
+}
+
       if(!props.isAuthorized){
         return <h1>Please log in to view your Profile</h1>
       }
@@ -43,10 +50,12 @@ console.log(likedMovies)
           <div>
             <h1> Welcome {user.username} </h1>
             <h2> Your watchlist</h2>
+            <div className="moviesContainer">
             {likedMovies.map(movie => {
-              console.log(movie)
-             return <Movie key={movie.id} movieID={movie.id}/>
+              // console.log(movie)
+             return <Movie key={movie.id} movieID={movie.movie_id} likedMovieID={movie.id} onRemove={handleRemoveMovie}/>
             })}
+            </div>
           </div>
         )
 

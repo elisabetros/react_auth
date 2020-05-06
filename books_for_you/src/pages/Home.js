@@ -7,6 +7,8 @@ import isAuthorized from '../custom_hooks/isAuthorized';
 
 const Home = (props) => {
     const [ movies, setMovies ] = useState([])
+    const [ error, setError ] = useState('')
+    const [ successMessage, setSuccessMessage ] = useState('') 
 
     useEffect(() => {
         
@@ -25,15 +27,37 @@ const Home = (props) => {
         })
     }, [])
 
-    const handleClick = (e) => {
-        console.log(e.target.parentElement.id)
+    const handleClick = async (e, id) => {
+        // console.log('click, like movie')
+        e.preventDefault()
+        // console.log(e.target.parentElement.id)
         if(!props.isAuthorized){
-            alert('login to like a movie')
+            setError('log in to add a movie to your watchlist')
+            return
         }
+        await axios.post('http://localhost/user/likeMovie', {
+            movieID: id
+        }).then(response => {
+            if(response.data.error){
+                setError(response.data.error)
+            }
+            else{
+                setSuccessMessage('Added to your watchlist')
+                setError('')
+                setTimeout(()=> {
+                    setSuccessMessage('')
+                },3000)
+            }
+        })
+        // console.log(data)
     }
   
     return(
         <div className="moviesContainer">
+            {error || successMessage ?
+                <div className={error? 'error': 'successMessage'}>{error? error: successMessage}</div> :
+                ''
+            }
             <h1>Popular Movies</h1>
             { movies.map( (movie)=> {
                 return (
@@ -41,8 +65,10 @@ const Home = (props) => {
                     <img src={movie.posterPath}/>
                     <h2>{movie.title}</h2>
                     <p>{movie.overview}</p>
-                    <Link to={"/movieReview/"+movie.id} >See Reviews</Link>                   
-                    <button onClick={(e) => handleClick(e)}>Add to Watchlist</button>
+                    <div>
+                        <Link to={"/movieReview/"+movie.id} >See Reviews</Link>                   
+                        <button onClick={(e) => handleClick(e,movie.id)}>Add to Watchlist</button>
+                    </div>
                 </div>
                 )
             })}

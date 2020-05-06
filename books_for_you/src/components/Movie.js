@@ -9,7 +9,7 @@ const Movie = (props) => {
     useEffect(() => {
         let isFetching = true;
         const fetchMoviesFromAPI = async () => {
-              console.log('movie')
+            //   console.log('movie')
             const response = await axios(`https://api.themoviedb.org/3/movie/${props.movieID}?api_key=${apiKey.key}`)
             console.log(response.data.title)
             if(isFetching){
@@ -24,12 +24,20 @@ const Movie = (props) => {
         return () => isFetching=false;
     },[])
 
-    console.log(movie.title)
+    // console.log(props.likedMovieID)
+
+    const handleRemoveMovie = async () => {
+        await axios.post('http://localhost/user/removeLiked', 
+         {movieID: props.likedMovieID}).then(response => console.log(response))
+        props.onRemove(props.likedMovieID)
+    }
+
+    // console.log(movie.title)
     return(
         <div className="movie">
             <h1>{movie.title}</h1>
             <img src={movie.imgPath} alt="movie poster"/>
-            <button>Remove from watchlist</button>
+            <button onClick={handleRemoveMovie}>Remove from watchlist</button>
         </div>
     )
 }

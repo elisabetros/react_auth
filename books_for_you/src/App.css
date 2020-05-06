@@ -39,7 +39,7 @@ label{
 button, input{
   padding:10px;
 }
-form > button{
+button{
   background:darkslategrey;
   border: none;
   color:white;
@@ -55,16 +55,65 @@ form > button{
 }
 .movie{
   padding: 3%;
-  border: 1px solid #ddd;
+  border: 3px solid #ddd;
+  display: grid;
+  /* grid-template-columns: 1fr 1fr; */
+  /* grid-template-rows: 20em auto 10em 1em; */
 }
 .movie img{
   width:80%;
-  display: block;
   margin:auto;
+  grid-column: 1/-1;
 }
 .movie p, .movie h2{
+  grid-column: 1/-1;
   padding: 1% 0;
 }
 .moviesContainer h1{
   grid-column: 1/-1;
+}
+.movie>div{
+  align-self: end;
+}
+.movie button{
+  display: block;
+  margin:4% auto 0;
+  height: 4em;
+  justify-self:end;
+  font-size: 80%;
+}
+.movie a{
+  display: block;
+  justify-self: center;
+  text-align: center;
+}
+
+/* Login page */
+
+
+.loginPage a{
+  text-align: center;
+  color:darkslategrey;
+}
+
+.error, .successMessage{
+  text-align: center;
+  text-transform: capitalize;
+}
+.error{
+  color:red;
+}
+.successMessage{
+  color:darkslategrey;
+}
+
+.moviesContainer .error,
+.moviesContainer .successMessage{
+  position: fixed;
+  top:10vh;
+  left:30vw;
+  right:30vw;
+  background:white;
+  border:3px solid darkslategrey;
+  padding:5%;
 }

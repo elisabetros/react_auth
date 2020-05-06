@@ -23,7 +23,7 @@ app.use(session({
      }
   }))
 
-let sess = null;
+let sess;
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
