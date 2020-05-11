@@ -20,6 +20,9 @@ const SendResetEmail = (props) => {
             }else{
                 setError('')
                 setSuccessMessage('You will receive an email shortly')
+                setTimeout(()=> {
+                    props.history.push('/home')
+                },3000)
             }
             // if(response){
             //    return (
