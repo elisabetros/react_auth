@@ -41,6 +41,7 @@ router.post('/user/login', async (req, res) => {
                     sess.user = user
                     sess.isLoggedIn = true
                     req.session.isLoggedIn = true
+                    req.session.user = user
                     delete sess.user.password
                     res.send(sess.user)
                 }
@@ -82,7 +83,7 @@ router.post('/user/sendResetLink', async (req, res) => {
         return res.send({error: 'missing fields'})
     }
     // if email is not an email
-    const user = await User.query().select().where({email})
+    const user = await User.query().select().where({ email })
     if(!user[0]){
         return res.send({error: 'no user with this email'})
     }
@@ -124,7 +125,7 @@ router.post('/user/resetpassword/', async (req, res) => {
         try{
             const updatedUser = await User.query().update({ 
                 password: hashedPassword
-            }).where({ id:id })
+            }).where({ id })
             return res.status(200).send(true)
 
         }catch(error){
